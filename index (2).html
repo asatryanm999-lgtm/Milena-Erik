@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Էրիկի և Միլենայի Տոնական Արարողություն</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Sans+Armenian:wght@100;200;300;400;500&display=swap');
+        
+        * { 
+            box-sizing: border-box; 
+        }
+        
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Noto Sans Armenian', sans-serif; 
+            background: #fdfbf7; 
+            color: #4a3f35; 
+            overflow-x: hidden; 
+            width: 100%; 
+            scroll-behavior: smooth; 
+        }
+        
+        .italic-text { 
+            font-family: 'Noto Sans Armenian', sans-serif; 
+            font-style: italic; 
+            font-weight: 300; 
+        }
+        
+        .cursive { 
+            font-family: 'Dancing Script', cursive; 
+        }
+
+        /* ՖԻՔՍՎԱԾ ԵՐԱԺՇՏՈՒԹՅԱՆ ԿՈՃԱԿԸ */
+        .music-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ebdccb;
+            color: #a58c73;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(165, 140, 115, 0.2);
+        }
+
+        /* ԳԼԽԱՎՈՐ ԷԿՐԱՆ */
+        #hero-screen {
+            min-height: 100vh; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 150px 15px; 
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ԱՌԱՋԻՆ ԷՋԻ ՆԿԱՐՆԵՐԸ - ՏՈԿՈՍՈՎ, ՈՐ ՄԵԾ ԵՐԵՎԱՆ ՀԵՌԱԽՈՍՈՎ */
+        .hero-img-big {
+            position: absolute;
+            width: 38%; /* Ավելի մեծ տոկոս, որ փոքր չլինի */
+            max-width: 150px;
+            aspect-ratio: 3 / 4; /* Պահում է նկարի ճիշտ կառուցվածքը */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(165, 140, 115, 0.15);
+            opacity: 0;
+            transition: opacity 2s ease, transform 2s ease;
+        }
+        
+        .hero-left-top {
+            top: 25px;
+            left: 15px;
+            transform: translate(-15px, -15px);
+        }
+        
+        .hero-right-bottom {
+            bottom: 25px;
+            right: 15px;
+            transform: translate(15px, 15px);
+        }
+        
+        .hero-img-big img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .title-fade, .subtitle-fade { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: opacity 2s ease, transform 2s ease; 
+            text-align: center; 
+            z-index: 5;
+            max-width: 45%; /* Որ տեքստը նկարներին չկպնի */
+        }
+        
+        .title-fade { margin-top: 10px; }
+        .subtitle-fade { transition-delay: 0.8s; margin-top: 15px; }
+        
+        .date-sequence { 
+            display: flex; 
+            justify-content: center; 
+            gap: 4px; 
+            font-size: 1.4rem; 
+            letter-spacing: 2px; 
+            margin-top: 20px; 
+            font-weight: 200; 
+            color: #a58c73; 
+        }
+        
+        .date-num { 
+            opacity: 0; 
+            transform: scale(0.9); 
+            transition: opacity 0.8s ease, transform 0.8s ease; 
+        }
+        
+        .visible .hero-img-big { opacity: 1; transform: translate(0, 0); }
+        .visible .title-fade { opacity: 1; transform: translateY(0); }
+        .visible .subtitle-fade { opacity: 1; transform: translateY(0); }
+        .visible .dn1 { opacity: 1; transform: scale(1); transition-delay: 1.8s; }
+        .visible .dn2 { opacity: 1; transform: scale(1); transition-delay: 2.3s; }
+        .visible .dn3 { opacity: 1; transform: scale(1); transition-delay: 2.8s; }
+/* ԲԱԺԻՆՆԵՐԻ ՈՃԵՐԸ */
+        .section { 
+            padding: 80px 25px; 
+            text-align: center; 
+            background: #ffffff; 
+        }
+        
+        .bg-light-beige { 
+            background: #fbf9f4; 
+        }
+
+        /* ՀԵՏՀԱՇՎԱՐԿԻ ԹԱՅՄԵՐ */
+        .countdown-container { 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+            margin: 40px auto 10px auto; 
+            max-width: 360px;
+        }
+        
+        .countdown-block { 
+            background: #ffffff; 
+            border-radius: 16px; 
+            padding: 16px 8px; 
+            min-width: 70px; 
+            box-shadow: 0 8px 25px rgba(165,140,115,0.08); 
+            border: 1px solid #f5efe6; 
+        }
+        
+        .countdown-num { 
+            font-size: 1.8rem; 
+            font-weight: 300; 
+            display: block; 
+            color: #4a3f35; 
+        }
+        
+        .countdown-lbl { 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            color: #bfaea0; 
+            margin-top: 6px; 
+            display: block; 
+            letter-spacing: 1px; 
+        }
+
+        /* ՀԱՍՑԵՆԵՐԻ ԲԱԺԻՆ */
+        .address-card { 
+            margin-bottom: 60px; 
+            text-align: center; 
+        }
+        
+        .address-card:last-child { 
+            margin-bottom: 0; 
+        }
+        
+        .time-badge { 
+            font-size: 1.1rem; 
+            letter-spacing: 2px; 
+            color: #a58c73; 
+            font-weight: 400; 
+            display: block; 
+            margin-bottom: 8px; 
+        }
+        
+        .location-title { 
+            font-size: 1.7rem; 
+            font-weight: 400; 
+            margin: 0 0 5px 0; 
+            color: #4a3f35; 
+        }
+        
+        .content-frame { 
+            width: 100%; 
+            max-width: 340px; 
+            height: 260px; 
+            margin: 0 auto 20px auto; 
+            overflow: hidden; 
+            border-radius: 24px; 
+            box-shadow: 0 12px 30px rgba(165,140,115,0.12); 
+        }
+        
+        .content-frame img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        
+        .map-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 0.85rem; 
+            text-decoration: none; 
+            color: #a58c73; 
+            border-bottom: 1px solid #a58c73; 
+            padding-bottom: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-weight: 400; 
+        }
+
+        /* RSVP-Ի ՎԵՐԵՎԻ ԻՐԱՐ ՏԱԿ ՆԿԱՐՆԵՐԸ (ՈՐ ԲՆԱՎ ՉԿՏՐՎԵՆ ՈՒ ՀԵՌԱԽՈՍՈՎ ՆՈՐՄԱԼ ԼԻՆԵՆ) */
+        .full-stacked-photo {
+            width: 100%;
+            max-width: 320px; /* Չափավոր լայնություն հեռախոսի համար */
+            height: auto;     /* Ավտոմատ բարձրություն, որ չսեղմվի */
+            aspect-ratio: 3 / 4; 
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(165, 140, 115, 0.12);
+            margin: 25px auto; 
+        }
+
+        .full-stacked-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Նկարը լրացնում է շրջանակը՝ առանց դուրս գալու */
+        }
+
+        /* RSVP ԴԻԶԱՅՆ */
+        .rsvp-wrapper { 
+            max-width: 350px; 
+            margin: 40px auto 0 auto; 
+            background: #ffffff; 
+            padding: 45px 24px; 
+            border-radius: 35px; 
+            box-shadow: 0 15px 45px rgba(165, 140, 115, 0.1); 
+            border: 1px solid #f5efe6; 
+            text-align: center; 
+        }
+        
+        .rsvp-headline { 
+            font-size: 3.8rem; 
+            margin: 0 0 25px 0; 
+            font-weight: 400; 
+            color: #a58c73; 
+        }
+        
+        .input-group { 
+            width: 100%; 
+            margin-bottom: 22px; 
+        }
+        
+        .rsvp-input { 
+            width: 100%; 
+            padding: 18px 22px; 
+            border: 1px solid #ebdccb; 
+            border-radius: 18px; 
+            font-size: 0.95rem; 
+            font-family: inherit; 
+            color: #4a3f35; 
+            outline: none; 
+            background: #fdfdfb; 
+        }
+        
+        .rsvp-input::placeholder { 
+            color: #bfaea0; 
+        }
+
+        .action-btn { 
+            width: 100%; 
+            padding: 18px; 
+            background: #000000; 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 25px; 
+            font-size: 0.95rem; 
+            font-weight: 400; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            margin-top: 15px; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15); 
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="main-audio" autoplay loop><source src="music.mp3" type="audio/mpeg"></audio>
+
+    <button class="music-toggle-btn" id="musicToggle" onclick="toggleMusic()">
+        <i class="fas fa-music" id="musicIcon"></i>
+    </button>
+
+    <div id="hero-screen">
+        <div class="hero-img-big hero-left-top"><img src="Milena&Erik.jpg" alt="Էրիկ և Միլենա"></div>
+        <div class="hero-img-big hero-right-bottom"><img src="Milena.jpg" alt="Միլենա"></div>
+        
+        <div class="title-fade">
+            <h1 class="italic-text" style="font-size: 1.8rem; margin: 0; color: #4a3f35; letter-spacing: 1px; line-height: 1.3;">Էրիկ & Միլենա</h1>
+            <h2 class="italic-text" style="font-size: 1.2rem; margin: 8px 0 0 0; color: #a58c73; font-weight: 200;">Սբ. Մկրտության արարողություն</h2>
+        </div>
+        
+        <div class="subtitle-fade">
+            <h2 class="italic-text" style="font-size: 1.2rem; margin: 0; color: #a58c73; font-weight: 200;">Միլենայի ծննդյան արարողություն</h2>
+            
+            <div class="date-sequence">
+                <span class="date-num dn1">14 .</span>
+                <span class="date-num dn2">09 .</span>
+                <span class="date-num dn3">26</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="section bg-light-beige" data-aos="fade-up">
+        <p class="italic-text" style="font-size: 1.2rem; color: #4a3f35; line-height: 2.3; max-width: 480px; margin: 0 auto; padding: 0 10px;">
+            Սիրե՜լի ընկերներ և բարեկամներ,<br>
+            Մեծ սիրով և ջերմությամբ հրավիրում ենք ձեզ` ներկա գտնվելու Էրիկի և Միլենայի Սուրբ Մկրտության և Միլենայի ծննդյան արարողությանը
+        </p>
+    </section>
+
+    <section class="section bg-light-beige" style="padding-top: 10px; padding-bottom: 40px;" data-aos="fade-up">
+        <div class="countdown-container">
+            <div class="countdown-block"><span id="days_val" class="countdown-num">00</span><span class="countdown-lbl">Օր</span></div>
+            <div class="countdown-block"><span id="hours_val" class="countdown-num">00</span><span class="countdown-lbl">Ժամ</span></div>
+            <div class="countdown-block"><span id="mins_val" class="countdown-num">00</span><span class="countdown-lbl">Րոպե</span></div>
+            <div class="countdown-block"><span id="secs_val" class="countdown-num">00</span><span class="countdown-lbl">Վրկ</span></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="italic-text" style="font-size: 2rem; color: #4a3f35; margin-bottom: 50px; font-weight: 300;" data-aos="fade-up">Հասցեներ</h2>
+        
+        <div class="address-card" data-aos="fade-up">
+            <span class="time-badge">14:30</span>
+            <h3 class="location-title">Սբ. Էջմիածին</h3>
+            <div class="content-frame"><img src="church.jpg" alt="Եկեղեցի"></div>
+            <a href="https://maps.google.com/?q=Mother+See+of+Holy+Etchmiadzin" target="_blank" class="map-btn">
+                Տեսնել Քարտեզում <i class="fas fa-long-arrow-alt-right"></i>
+            </a>
+        </div>
+
+        <hr style="border: 0; height: 1px; background: #ebdccb; max-width: 150px; margin: 60px auto;">
+
+        <div class="address-card" data-aos="fade-up">
+            <span class="time-badge">17:30</span>
+            <h3 class="location-title">Joy Hall</h3>
+            <div class="content-frame"><img src="rest.jpg" alt="Ռեստորան"></div>
+            <a href="https://maps.google.com/?q=Joy+Hall+Restaurant+28+Karen+Demirchyan+Parakar" target="_blank" class="map-btn">
+                Տեսնել Քարտեզում <i class="fas fa-long-arrow-alt-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <section class="section bg-light-beige" style="padding: 20px 25px;" data-aos="fade-up">
+        <div class="full-stacked-photo"><img src="Erik.jpg" alt="Էրիկ"></div>
+        <div class="full-stacked-photo"><img src="Milena1.jpg" alt="Միլենա"></div>
+    </section>
+
+    <section class="section bg-light-beige" style="padding-top: 10px;">
+        <div class="rsvp-wrapper" data-aos="fade-up">
+            <h2 class="rsvp-headline cursive">RSVP</h2>
+            
+            <div class="input-group">
+                <input type="text" id="guest_name" class="rsvp-input" placeholder="Անուն Ազգանուն">
+            </div>
+            
+            <div class="input-group">
+                <input type="number" id="adults_count" class="rsvp-input" placeholder="Մեծահասակների քանակ">
+            </div>
+
+            <div class="input-group">
+                <input type="number" id="kids_count" class="rsvp-input" placeholder="Երեխաների քանակ">
+            </div>
+            
+            <button class="action-btn" onclick="submitRSVPToWhatsApp()">Պատասխանել</button>
+            
+            <p class="italic-text" style="font-size: 1.4rem; color: #a58c73; margin-top: 35px; margin-bottom: 0;">Սիրո՜վ կսպասենք</p>
+        </div>
+    </section>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        const audioTrack = document.getElementById('main-audio');
+        const musicIcon = document.getElementById('musicIcon');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('hero-screen').classList.add('visible');
+            }, 150);
+            
+            if (audioTrack) {
+                audioTrack.volume = 0.5;
+                audioTrack.play().then(() => {
+                    musicIcon.className = "fas fa-pause";
+                }).catch(err => {
+                    console.log("Ավտոմատ նվագարկումն արգելափակվեց:");
+                });
+            }
+        });
+
+        function toggleMusic() {
+            if (audioTrack.paused) {
+                audioTrack.play();
+                musicIcon.className = "fas fa-pause";
+            } else {
+                audioTrack.pause();
+                musicIcon.className = "fas fa-music";
+            }
+        }
+
+        const eventDate = new Date("September 14, 2026 14:30:00").getTime();
+        
+        setInterval(() => {
+            const currentTime = new Date().getTime();
+            const timeDifference = eventDate - currentTime;
+            
+            if (timeDifference > 0) {
+                document.getElementById('days_val').innerText = String(Math.floor(timeDifference / 86400000)).padStart(2, '0');
+                document.getElementById('hours_val').innerText = String(Math.floor((timeDifference % 86400000) / 3600000)).padStart(2, '0');
+                document.getElementById('mins_val').innerText = String(Math.floor((timeDifference % 3600000) / 60000)).padStart(2, '0');
+                document.getElementById('secs_val').innerText = String(Math.floor((timeDifference % 60000) / 1000)).padStart(2, '0');
+            } else {
+                document.getElementById('days_val').innerText = "00";
+                document.getElementById('hours_val').innerText = "00";
+                document.getElementById('mins_val').innerText = "00";
+                document.getElementById('secs_val').innerText = "00";
+            }
+        }, 1000);
+
+        function submitRSVPToWhatsApp() {
+            const name = document.getElementById('guest_name').value.trim();
+            const adults = document.getElementById('adults_count').value || 0;
+            const kids = document.getElementById('kids_count').value || 0;
+
+            if (!name) {
+                alert("Խնդրում ենք լրացնել Անուն Ազգանուն դաշտը։");
+                return;
+            }
+
+            const phoneTarget = "37477464186"; 
+
+            const textMessage = `🕊️ *RSVP Պատասխան - Տոնական Արարողություն* 🕊️%0A%0A` +
+                                `👤 *Հյուր:* ${name}%0A` +
+                                `👨‍🦳 *Մեծահասակների քանակ:* ${adults}%0A` +
+                                `👶 *Երեխաների քանակ:* ${kids}`;
+
+            const finalUrl = `https://api.whatsapp.com/send?phone=${phoneTarget}&text=${textMessage}`;
+            window.open(finalUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
